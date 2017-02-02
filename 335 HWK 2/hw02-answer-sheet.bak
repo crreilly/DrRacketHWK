@@ -38,50 +38,14 @@ the default definitions will have to be present!
 )
 
 ;======================================03=======================================
-;base case is if n == 0, return a list of '(%)
-;for non base cases, first check if odd, odd uses '+', even uses '%'
-;1st step will be to expand on previous
-;2nd step will be to add a string of (+ (* n 2) 1) characters to the top and bottom
-; (which is actually the beginning and end)
 (define (carpet n)
-  (if (= n 0)
-      '((%))
-      (add-top-bottom (expand-each-line (carpet (- n 1))
-                                        (find-sym n))n)))
-(define (find-sym n)
-  (if (odd? n)
-     '+
-     '%))
-
-(define (expand-each-line carp sym) ;sym is either + or %
-  (if (eq? carp '())
-     '()
-     (cons (append (cons sym (car carp)) (list sym)) ;first line
-         (expand-each-line (cdr carp) sym))))
-
-(define (add-top-bottom carp n)
-  (append (list (build-list (+ (* n 2) 1) (const (find-sym n)))) carp
-          (list (build-list (+ (* n 2) 1) (const (find-sym n))))))
+  'UNIMPLEMENTED  
+)
 
 ;======================================04=======================================
 (define (pascal n)
-   (if (= n 1)
-      '((1))
-      (insert (create_row (last (pascal (- n 1)))) (pascal (- n 1)))))
-
-;Meld the top and bottom to create a larger pyramid
-(define (insert bottom top)
-  (append top (list bottom)))
-
-;Will append 1's to each side of the 'core'
-(define (create_row last_row)
-  (append '(1) (create_core last_row) '(1)))
-
-;Will create a 'core' which is the new row without the 1's 
-(define (create_core last_row) 
-  (if (equal? (cdr last_row) '())
-      '()
-      (append (list (+ (car last_row) (cadr last_row))) (create_core (cdr last_row)))))
+ 'UNIMPLEMENTED  
+)
 
 ;======================================05=======================================
 (define (balanced? in)
