@@ -20,22 +20,36 @@ the default definitions will have to be present!
 |#
 ;======================================01=======================================
 (define (list-of-even-numbers? lst)
-  'UNIMPLEMENTED  
-)
+  (if (null? lst) ;base case '() will return #t for this 
+      true ;an empty list is true
+      (if (and (integer? (car lst)) (even? (car lst)))
+          (list-of-even-numbers? (cdr lst))
+          false))) 
 
 ;======================================02=======================================
 ;;for n > 0
 ;Sn = 1/1 + 1/4 + 1/9 + 1/16 + ...
 (define (series-a n)
-  'UNIMPLEMETED
+  (if (<= n 0)
+      0
+      (+ (/ 1 (* n n)) (series-a (- n 1))))
+      
 )
 
 ;====
 ;;for n >= 0
 ;Sn = 1 - 1/2 + 1/6 - 1/24 + ...
 (define (series-b n)
-  'UNIMPLEMETED
+  (if (< n 0)
+      0
+      (+ (/ (expt -1 n) (comp-fact (+ n 1))) (series-b (- n 1))))
 )
+
+;computes the factorial
+(define (comp-fact n)
+  (if (= n 1)
+      1 ;base case
+      (* n (comp-fact (- n 1))))) 
 
 ;======================================03=======================================
 ;base case is if n == 0, return a list of '(%)
@@ -85,15 +99,47 @@ the default definitions will have to be present!
 
 ;======================================05=======================================
 (define (balanced? in)
-  'UNIMPLEMENTED  
+  (if (is-balanced? (string->list in) 0)
+      "balanced"
+      "unbalanced")
 )
+
+(define (is-balanced? lst cnt)
+  (cond
+    ((and (null? lst) (= 0 cnt)) true)
+    ((and (null? lst) (> cnt 0)) false)
+    (else (if (< cnt 0)
+          false
+          (cond
+            ( (equal? #\( (car lst)) (is-balanced? (cdr lst) (+ cnt 1)))
+            ( (equal? #\) (car lst)) (is-balanced? (cdr lst) (- cnt 1)))
+            ( else (is-balanced? (cdr lst) cnt)))))))
+          
 
 ;======================================06=======================================
 (define (list-of-all? predicate lst)
-  'UNIMPLEMENTED  
+  (if (null? lst)
+      true
+      (if (predicate (car lst))
+          (list-of-all? predicate (cdr lst))
+          false))
 )
-
 ;======================================07=======================================
 (define (create-mapping keys vals)
-  'UNIMPLEMENTED  
+  (cond
+    ( (not (and (list? keys) (list? vals))) "invalid list")
+    ( (not (= (length keys) (length vals))) "the lists are not equal length")
+    ( else
+      (lambda (key)
+        (if (false? (find-key-val keys vals key))
+            "Could not find mapping"
+            (find-key-val keys vals key)))))
+      
 )
+
+(define (find-key-val keys vals key)
+  (if (null? keys)
+      false
+      (if (equal? (car keys) key)
+          (car vals)
+          (find-key-val (cdr keys) (cdr vals) key))))
